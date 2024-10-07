@@ -6,6 +6,8 @@ public class GamePanel extends JPanel implements Runnable {
     final int tileHeight = 48;
     final int screenHeightTiles = 12;
     final int screenWidthTiles = 16;
+    final int widthBuffer = 2;
+    final int heightBuffer = 1;
     final int screenWidth = tileWidth * screenWidthTiles;
     final int screenHeight = tileHeight * screenHeightTiles;
     Thread thread;
@@ -36,8 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g3 = (Graphics2D) g.create();
         g2.setColor(Color.WHITE);
         g3.setColor(Color.GREEN);
-        int widthBuffer = 2;
-        int heightBuffer = 1;
+
         g2.drawRect(tileWidth * widthBuffer, tileHeight * heightBuffer , tileWidth*(screenWidthTiles -(widthBuffer*2)),tileHeight*(screenHeightTiles-(heightBuffer*2)));
         int x = widthBuffer+1;
         while (x < screenWidthTiles-widthBuffer+1) {

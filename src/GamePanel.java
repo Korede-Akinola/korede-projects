@@ -39,19 +39,19 @@ public class GamePanel extends JPanel implements Runnable {
         int widthBuffer = 2;
         int heightBuffer = 1;
         g2.drawRect(tileWidth * widthBuffer, tileHeight * heightBuffer , tileWidth*(screenWidthTiles -(widthBuffer*2)),tileHeight*(screenHeightTiles-(heightBuffer*2)));
-        int x = 3;
-        while (x < 15){
-            int y = 1;
-            while (y < 11){
-                if (x == 14 && y == 1){
+        int x = widthBuffer+1;
+        while (x < screenWidthTiles-widthBuffer+1) {
+            int y = heightBuffer;
+            while (y < screenHeightTiles-heightBuffer) {
+                if (x == screenWidthTiles-widthBuffer && y == heightBuffer) {
                     y++;
                     continue;
                 }
-                if (x == 14){
+                if (x == screenWidthTiles-widthBuffer){
                      g2.drawLine(tileWidth * x, tileHeight * y, tileWidth * (x - 1), tileHeight * y);
 
 
-                } else if (y == 1) {
+                } else if (y == heightBuffer) {
                     g2.drawLine(tileWidth * x, tileHeight * y, tileWidth * x, tileHeight * (y + 1));
 
                 } else {

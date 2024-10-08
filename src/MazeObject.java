@@ -45,4 +45,13 @@ public class MazeObject {
     public boolean bottomExplored(){
         return bottom_empty;
     }
+    public String toString(){
+        String result  = "";
+        result += "Top: " + top_empty + "\n";
+        result += "Bottom: " + bottom_empty + "\n";
+        result += "Left: " + left_empty + "\n";
+        result += "Right: " + right_empty + "\n";
+
+        return result;
+    }
 }

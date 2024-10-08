@@ -15,26 +15,32 @@ public class MazeBuilder {
 
 
 
-        System.out.println(maze.length);
         if (x+1<maze.length){
             if (maze[x+1][y].isUnexplored()){
-                directions.add("E");
+                directions.add("S");
 
             }
         }
         if (y+1<maze[0].length){
             if (maze[x][y+1].isUnexplored()){
-                directions.add("S");
+                directions.add("E");
             }
         }
         if (x - 1>= 0 ){
             if (maze[x-1][y].isUnexplored()){
-                directions.add("W");
+                directions.add("N");
             }
         }
+        System.out.println(y-1>0);
+        try {
+            System.out.println(maze[x][y-1].isUnexplored());
+        }catch (Exception e){
+            System.out.println(" ");
+        }
+
         if (y - 1>= 0 ){
             if (maze[x][y-1].isUnexplored()){
-                directions.add("N");
+                directions.add("W");
             }
         }
 
@@ -46,67 +52,52 @@ public class MazeBuilder {
         int placesReached = 1;
         int x = 0, y = 0;
 
+
         LinkedList<String> directions = exploreDirection(x,y);
+
+        do{
         String next_direction = directions.get(rand.nextInt(directions.size()));
-        System.out.println(next_direction);
+
+
         switch (next_direction){
             case "N":
                 maze[x][y].explore_top();
-                y--;
-                maze[x][y - 1].explore_bottom();
+                x--;
+                maze[x][y].explore_bottom();
                 break;
             case "S":
                 maze[x][y].explore_bottom();
-                y++;
+                x++;
                 maze[x][y].explore_top();
                 break;
             case "E":
                 maze[x][y].explore_right();
-                x++;
+                y++;
                 maze[x][y].explore_left();
                 break;
             case "W":
                 maze[x][y].explore_left();
-                x--;
+                y--;
                 maze[x][y].explore_right();
         }
-        System.out.println();
+
         placesReached++;
+        directions.clear();
+        directions = exploreDirection(x,y);
+        System.out.println(directions);
+
+
+        }while(!directions.isEmpty());
 
 
 }
-public String toString(){
-        String output = "";
-        String yOutput = " ";
-        for(int x = 0; x < maze.length; x++){
-            for (int y = 0; y < maze[x].length; y++){
-                output += " 0 ";
+    public MazeObject getObjectAt(int xPos,int yPos){
+        return maze[xPos][yPos];
+    }
 
-                if (maze[x][y].isUnexplored() || maze[x][y].leftExplored() || maze[x][y].topExplored()){
-                    output += " X " ;
-                    yOutput += "X     ";
-
-                }else if(maze[x][y].rightExplored()){
-                    output += " > ";
-
-
-
-                }else if(maze[x][y].bottomExplored()){
-                    yOutput += "|     ";
-                }
-
-            }
-            output += "\n";
-            output += yOutput;
-            yOutput = " ";
-            output += "\n";
-        }
-
-        return output;
-}
 public static void main(String[] args){
         MazeBuilder maze = new MazeBuilder(3,3);
         maze.buildMaze();
-        System.out.println(maze.toString());
+        System.out.println("\n"+maze.toString());
 }
 }

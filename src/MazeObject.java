@@ -42,7 +42,7 @@ public class MazeObject {
     public boolean rightExplored(){
         return right_empty;
     }
-    public boolean BottomExplored(){
+    public boolean bottomExplored(){
         return bottom_empty;
     }
 }

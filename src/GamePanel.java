@@ -27,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
             while (thread != null) {
                 update();
                 repaint();
+                MazeBuilder maze = new MazeBuilder(screenWidthTiles-widthBuffer, screenHeight-heightBuffer);
             }
     }
     public void update() {
@@ -36,8 +37,10 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D g3 = (Graphics2D) g.create();
+        Graphics2D g4 = (Graphics2D) g.create();
         g2.setColor(Color.WHITE);
         g3.setColor(Color.GREEN);
+        g4.setColor(Color.BLUE);
 
         g2.drawRect(tileWidth * widthBuffer, tileHeight * heightBuffer , tileWidth*(screenWidthTiles -(widthBuffer*2)),tileHeight*(screenHeightTiles-(heightBuffer*2)));
         int x = widthBuffer+1;
@@ -63,7 +66,6 @@ public class GamePanel extends JPanel implements Runnable {
             }
             x++;
         }
-
         g2.dispose();
     }
 }

@@ -4,8 +4,8 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable {
     final int tileWidth = 48;
     final int tileHeight = 48;
-    final int screenHeightTiles = 5;
-    final int screenWidthTiles = 5;
+    final int screenHeightTiles = 10;
+    final int screenWidthTiles = 10;
     final int widthBuffer = 1;
     final int heightBuffer = 1;
     final int screenWidth = tileWidth * screenWidthTiles;
@@ -26,11 +26,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
     public void run(){
-            while (thread != null) {
+
                 update();
                 repaint();
-                MazeBuilder maze = new MazeBuilder(screenWidthTiles-widthBuffer, screenHeight-heightBuffer);
-            }
+                System.out.println();
+
     }
     public void update() {
 
@@ -41,7 +41,9 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g3 = (Graphics2D) g.create();
         Graphics2D g4 = (Graphics2D) g.create();
         g2.setColor(Color.WHITE);
-        g3.setColor(Color.blue);
+        g3.setColor(Color.black);
+        g4.setColor(Color.gray);
+
 
 
         g2.drawRect(tileWidth * widthBuffer, tileHeight * heightBuffer , tileWidth*(screenWidthTiles -(widthBuffer*2)),tileHeight*(screenHeightTiles-(heightBuffer*2)));
@@ -79,23 +81,31 @@ public class GamePanel extends JPanel implements Runnable {
         boolean right = false;
         boolean up = false;
         boolean down = false;
-        for(int xCord = 0; xCord < screenWidthTiles-(widthBuffer*2);xCord++){
-            for(int yCord = 0; yCord < screenHeightTiles-(heightBuffer*2);yCord++){
-                MazeObject mazeAt = mazeBuilder.getObjectAt(xCord,yCord);
-                if (mazeAt.leftExplored()){
+        MazeObject maze_At = mazeBuilder.getObjectAt(1,1);
+        for(int yCord = 0; yCord < screenHeightTiles-(heightBuffer*2);yCord++){
+            for(int xCord = 0; xCord < screenWidthTiles-(widthBuffer*2);xCord++){
+                MazeObject mazeAt = mazeBuilder.getObjectAt(yCord,xCord);
+                if (mazeAt.getIstart()){
 
+                    g4.fillRect(tileWidth*(xCord+widthBuffer)+tileWidth/4,tileHeight*(yCord+heightBuffer)+tileHeight/4,tileWidth-tileWidth/2,tileHeight-tileHeight/2);
+                };
+                if (mazeAt.leftExplored()){
+                    //System.out.println("leftExplored ");
                     g3.drawLine(tileWidth * (1+xCord), tileHeight * (1+yCord), tileWidth * (1+xCord), tileHeight * (1 + 1+yCord));
                 }
                 if (mazeAt.bottomExplored()){
+                    //System.out.println("bottomExplored "+ xCord+ " "+yCord);
                     g3.drawLine(tileWidth * (2+xCord), tileHeight * (2 + yCord), tileWidth * (2 - 1 + xCord), tileHeight * (2+yCord));
 
 
                 }
                 if (mazeAt.topExplored()){
+                    //System.out.println("topExplored " + xCord+" "+yCord);
                     g3.drawLine(tileWidth * (2+xCord), tileHeight * (1+yCord), tileWidth * (2 - 1+xCord), tileHeight * (1+yCord));
 
                 }
                 if (mazeAt.rightExplored()){
+                    //System.out.println("rightExplored "+xCord+" "+yCord);
                     g3.drawLine(tileWidth * (2+xCord), tileHeight * (1+yCord), tileWidth * (2+xCord), tileHeight * (1 + 1+yCord));
                 }
 

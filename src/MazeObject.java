@@ -1,4 +1,5 @@
 public class MazeObject {
+    private boolean isStart;
     private int[] objectCords = new int[2];
     private boolean top_empty;
     private boolean bottom_empty;
@@ -15,18 +16,22 @@ public class MazeObject {
         explored = true;
     }
     public void explore_top(){
+        //System.out.println(objectCords[0] + " " + objectCords[1]+" TOP");
         top_empty = true;
         explored = false;
     }
     public void explore_bottom(){
+        //System.out.println(objectCords[0] + " " + objectCords[1]+" bottom");
         bottom_empty = true;
         explored = false;
     }
     public void explore_left(){
+        //System.out.println(objectCords[0] + " " + objectCords[1]+" left");
         left_empty = true;
         explored = false;
     }
     public void explore_right(){
+        //System.out.println(objectCords[0] + " " + objectCords[1]+" right");
         right_empty = true;
         explored = false;
     }
@@ -46,12 +51,19 @@ public class MazeObject {
         return bottom_empty;
     }
     public String toString(){
-        String result  = "";
+        String result  = "Cords: ";
+        result += objectCords[0] + " " + objectCords[1] + "\n";
         result += "Top: " + top_empty + "\n";
         result += "Bottom: " + bottom_empty + "\n";
         result += "Left: " + left_empty + "\n";
         result += "Right: " + right_empty + "\n";
 
         return result;
+    }
+    public boolean getIstart(){
+        return isStart;
+    }
+    public void makeStart(){
+        isStart = true;
     }
 }

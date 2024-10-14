@@ -3,10 +3,10 @@ import java.util.Random;
 public class MazeBuilder {
     private MazeObject[][] maze;
     public MazeBuilder(int width, int height) {
-        maze = new MazeObject[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                maze[x][y] = new MazeObject(x,y);
+        maze = new MazeObject[height][width];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                maze[y][x] = new MazeObject(y,x);
             }
         }
     }
@@ -31,12 +31,7 @@ public class MazeBuilder {
                 directions.add("N");
             }
         }
-        System.out.println(y-1>0);
-        try {
-            System.out.println(maze[x][y-1].isUnexplored());
-        }catch (Exception e){
-            System.out.println(" ");
-        }
+
 
         if (y - 1>= 0 ){
             if (maze[x][y-1].isUnexplored()){
@@ -46,19 +41,69 @@ public class MazeBuilder {
 
         return directions;
     }
-    public void buildMaze(){
+    private LinkedList<int[]> explorePath(int x,int y,LinkedList<int[]> place){
         Random rand = new Random();
-        System.out.println("Building Maze");
-        int placesReached = 1;
-        int x = 0, y = 0;
-
-
+        place.addLast(new int[]{x,y});
         LinkedList<String> directions = exploreDirection(x,y);
+        System.out.println(directions);
+        do{
+            String next_direction = directions.get(rand.nextInt(directions.size()));
 
+            System.out.println(next_direction + " " + x + " " + y);
+            switch (next_direction){
+                case "N":
+                    maze[x][y].explore_top();
+                    x--;
+                    maze[x][y].explore_bottom();
+                    break;
+                case "S":
+                    maze[x][y].explore_bottom();
+                    x++;
+                    maze[x][y].explore_top();
+                    break;
+                case "E":
+                    maze[x][y].explore_right();
+                    y++;
+                    maze[x][y].explore_left();
+                    break;
+                case "W":
+                    maze[x][y].explore_left();
+                    y--;
+                    maze[x][y].explore_right();
+            }
+
+            directions.clear();
+            directions = exploreDirection(x,y);
+            place.addLast(new int[]{x,y});
+            System.out.println(directions);
+
+
+        }while(!directions.isEmpty());
+        return place;
+    }
+    public void buildMaze(){
+
+        System.out.println("Building Maze");
+        int x = 3, y = 3;
+        LinkedList<int[]> placesTravelled = new LinkedList<int[]>();
+        placesTravelled = explorePath(0,0,placesTravelled);
+        int i = 0;
+        while (i <placesTravelled.size()){
+            int[] curentPos = placesTravelled.remove(i);
+            if (!exploreDirection(curentPos[0],curentPos[1]).isEmpty()){
+
+                i = 0;
+                explorePath(curentPos[0],curentPos[1],placesTravelled);
+            }
+
+        }
+
+        /*LinkedList<String> directions = exploreDirection(x,y);
+        System.out.println(directions);
         do{
         String next_direction = directions.get(rand.nextInt(directions.size()));
 
-
+        System.out.println(next_direction + " " + x + " " + y);
         switch (next_direction){
             case "N":
                 maze[x][y].explore_top();
@@ -81,13 +126,12 @@ public class MazeBuilder {
                 maze[x][y].explore_right();
         }
 
-        placesReached++;
         directions.clear();
         directions = exploreDirection(x,y);
         System.out.println(directions);
 
 
-        }while(!directions.isEmpty());
+        }while(!directions.isEmpty());*/
 
 
 }

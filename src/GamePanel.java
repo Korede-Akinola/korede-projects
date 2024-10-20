@@ -2,14 +2,15 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
-    final int tileWidth = 48;
-    final int tileHeight = 48;
-    final int screenHeightTiles = 10;
-    final int screenWidthTiles = 10;
+   ;
+    final int screenHeightTiles = 20;
+    final int screenWidthTiles = 20;
     final int widthBuffer = 1;
     final int heightBuffer = 1;
-    final int screenWidth = tileWidth * screenWidthTiles;
-    final int screenHeight = tileHeight * screenHeightTiles;
+    final int screenWidth = 600;
+    final int screenHeight = 600;
+    final int tileWidth = screenWidth/screenWidthTiles;
+    final int tileHeight = screenHeight/screenHeightTiles;
     final MazeBuilder mazeBuilder = new MazeBuilder(screenWidthTiles-(widthBuffer*2), screenHeightTiles-(heightBuffer*2));
     Thread thread;
     public GamePanel() {

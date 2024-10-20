@@ -6,6 +6,7 @@ public class MazeObject {
     private boolean left_empty;
     private boolean right_empty;
     private boolean explored;
+    private boolean isEnd;
     public MazeObject(int x, int y) {
         objectCords[0] = x;
         objectCords[1] = y;
@@ -16,22 +17,18 @@ public class MazeObject {
         explored = true;
     }
     public void explore_top(){
-        //System.out.println(objectCords[0] + " " + objectCords[1]+" TOP");
         top_empty = true;
         explored = false;
     }
     public void explore_bottom(){
-        //System.out.println(objectCords[0] + " " + objectCords[1]+" bottom");
         bottom_empty = true;
         explored = false;
     }
     public void explore_left(){
-        //System.out.println(objectCords[0] + " " + objectCords[1]+" left");
         left_empty = true;
         explored = false;
     }
     public void explore_right(){
-        //System.out.println(objectCords[0] + " " + objectCords[1]+" right");
         right_empty = true;
         explored = false;
     }
@@ -65,5 +62,11 @@ public class MazeObject {
     }
     public void makeStart(){
         isStart = true;
+    }
+    public void makeEnd(){
+        isEnd = true;
+    }
+    public boolean isEnd(){
+        return isEnd;
     }
 }

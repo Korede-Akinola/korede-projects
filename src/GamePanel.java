@@ -14,8 +14,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread thread;
     public GamePanel() {
         mazeBuilder.buildMaze();
-        System.out.println(screenHeight);
-        System.out.println(screenWidth);
+
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -29,7 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
 
                 update();
                 repaint();
-                System.out.println();
+
 
     }
     public void update() {
@@ -40,9 +39,12 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D g3 = (Graphics2D) g.create();
         Graphics2D g4 = (Graphics2D) g.create();
+        Graphics2D g5 = (Graphics2D) g.create();
         g2.setColor(Color.WHITE);
         g3.setColor(Color.black);
-        g4.setColor(Color.gray);
+        g4.setColor(Color.green);
+        g5.setColor(Color.red);
+
 
 
 
@@ -89,23 +91,24 @@ public class GamePanel extends JPanel implements Runnable {
 
                     g4.fillRect(tileWidth*(xCord+widthBuffer)+tileWidth/4,tileHeight*(yCord+heightBuffer)+tileHeight/4,tileWidth-tileWidth/2,tileHeight-tileHeight/2);
                 };
+                if (mazeAt.isEnd()){
+                    g5.fillRect(tileWidth*(xCord+widthBuffer)+tileWidth/4,tileHeight*(yCord+heightBuffer)+tileHeight/4,tileWidth-tileWidth/2,tileHeight-tileHeight/2);
+
+                }
                 if (mazeAt.leftExplored()){
-                    //System.out.println("leftExplored ");
+
                     g3.drawLine(tileWidth * (1+xCord), tileHeight * (1+yCord), tileWidth * (1+xCord), tileHeight * (1 + 1+yCord));
                 }
                 if (mazeAt.bottomExplored()){
-                    //System.out.println("bottomExplored "+ xCord+ " "+yCord);
                     g3.drawLine(tileWidth * (2+xCord), tileHeight * (2 + yCord), tileWidth * (2 - 1 + xCord), tileHeight * (2+yCord));
 
 
                 }
                 if (mazeAt.topExplored()){
-                    //System.out.println("topExplored " + xCord+" "+yCord);
                     g3.drawLine(tileWidth * (2+xCord), tileHeight * (1+yCord), tileWidth * (2 - 1+xCord), tileHeight * (1+yCord));
 
                 }
                 if (mazeAt.rightExplored()){
-                    //System.out.println("rightExplored "+xCord+" "+yCord);
                     g3.drawLine(tileWidth * (2+xCord), tileHeight * (1+yCord), tileWidth * (2+xCord), tileHeight * (1 + 1+yCord));
                 }
 
@@ -117,6 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         g2.dispose();
         g3.dispose();
+        g4.dispose();
+        g5.dispose();
     }
 }
 

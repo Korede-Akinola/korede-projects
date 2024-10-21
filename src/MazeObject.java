@@ -61,7 +61,11 @@ public class MazeObject {
         return isStart;
     }
     public void makeStart(){
-        isStart = true;
+        if (isStart){
+         isStart = false;
+        }else{
+            isStart = true;
+        };
     }
     public void makeEnd(){
         isEnd = true;

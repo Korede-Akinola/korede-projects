@@ -2,23 +2,27 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
-   ;
-    final int screenHeightTiles = 20;
-    final int screenWidthTiles = 20;
+
+    final int screenHeightTiles = 10;
+    final int screenWidthTiles = 10;
     final int widthBuffer = 1;
     final int heightBuffer = 1;
     final int screenWidth = 600;
     final int screenHeight = 600;
     final int tileWidth = screenWidth/screenWidthTiles;
     final int tileHeight = screenHeight/screenHeightTiles;
-    final MazeBuilder mazeBuilder = new MazeBuilder(screenWidthTiles-(widthBuffer*2), screenHeightTiles-(heightBuffer*2));
+    MazeBuilder mazeBuilder = new MazeBuilder(screenWidthTiles-(widthBuffer*2), screenHeightTiles-(heightBuffer*2));
     Thread thread;
+
+    Keyhandler keyH = new Keyhandler();
     public GamePanel() {
         mazeBuilder.buildMaze();
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
+        this.addKeyListener(keyH);
+        this.setFocusable(true);
     }
     public void startGameThread() {
         thread = new Thread(this);
@@ -26,16 +30,61 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
     public void run(){
-
+            while(thread != null) {
                 update();
                 repaint();
+            }
 
+    }
+    public void winCondition(){
+        if(mazeBuilder.startX == mazeBuilder.endX && mazeBuilder.startY == mazeBuilder.endY) {
+            mazeBuilder = new MazeBuilder(screenWidthTiles-(widthBuffer*2), screenHeightTiles-(heightBuffer*2));
+            mazeBuilder.buildMaze();
 
+        }
     }
     public void update() {
 
+
+        MazeObject squareAt = mazeBuilder.getObjectAt(mazeBuilder.startX,mazeBuilder.startY);
+        if(keyH.upPressed && squareAt.topExplored()){
+            keyH.upPressed = false;
+            squareAt.makeStart();
+            mazeBuilder.startX--;
+            mazeBuilder.getObjectAt(mazeBuilder.startX,mazeBuilder.startY).makeStart();
+            winCondition();
+            return;
+        }
+        if(keyH.downPressed && squareAt.bottomExplored()){
+            keyH.downPressed = false;
+            squareAt.makeStart();
+            mazeBuilder.startX++;
+            mazeBuilder.getObjectAt(mazeBuilder.startX,mazeBuilder.startY).makeStart();
+            winCondition();
+            return;
+
+        }
+        if(keyH.leftPressed && squareAt.leftExplored()){
+            keyH.leftPressed = false;
+            squareAt.makeStart();
+            mazeBuilder.startY--;
+            mazeBuilder.getObjectAt(mazeBuilder.startX,mazeBuilder.startY).makeStart();
+            winCondition();
+            return;
+
+        }
+        if(keyH.rightPressed && squareAt.rightExplored()){
+            keyH.rightPressed = false;
+            squareAt.makeStart();
+            mazeBuilder.startY++;
+            mazeBuilder.getObjectAt(mazeBuilder.startX,mazeBuilder.startY).makeStart();
+            winCondition();
+
+        }
+
     }
     public void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D g3 = (Graphics2D) g.create();
@@ -84,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
         boolean right = false;
         boolean up = false;
         boolean down = false;
-        MazeObject maze_At = mazeBuilder.getObjectAt(1,1);
+
         for(int yCord = 0; yCord < screenHeightTiles-(heightBuffer*2);yCord++){
             for(int xCord = 0; xCord < screenWidthTiles-(widthBuffer*2);xCord++){
                 MazeObject mazeAt = mazeBuilder.getObjectAt(yCord,xCord);

@@ -1,6 +1,10 @@
 import java.util.LinkedList;
 import java.util.Random;
 public class MazeBuilder {
+    public int startX;
+    public int startY;
+    public int endX;
+    public int endY;
     private MazeObject[][] maze;
     public MazeBuilder(int width, int height) {
         maze = new MazeObject[height][width];
@@ -9,6 +13,7 @@ public class MazeBuilder {
                 maze[y][x] = new MazeObject(y,x);
             }
         }
+
     }
     private LinkedList<String> exploreDirection(int x,int y){
         LinkedList<String> directions = new LinkedList<String>();
@@ -84,30 +89,57 @@ public class MazeBuilder {
     private void pickStart() {
         Random rand = new Random();
         int directionOfStart = rand.nextInt(4);
+        int holderOne,holderTwo;
         switch (directionOfStart){
            case 0:
                 //north is the start here
-                maze[0][rand.nextInt(maze[0].length)].makeStart();
-                maze[maze.length - 1][rand.nextInt(maze[0].length)].makeEnd();
+               holderOne =rand.nextInt(maze[0].length);
+               holderTwo =rand.nextInt(maze[0].length);
+                maze[0][holderOne].makeStart();
+                maze[maze.length - 1][holderTwo].makeEnd();
+                startX = 0;
+                startY = holderOne;
+                endX = maze.length - 1;
+                endY = holderTwo;
                 break;
         case 1:
             //south is the start
-            maze[0][rand.nextInt(maze[0].length)].makeEnd();
-            maze[maze.length - 1][rand.nextInt(maze[0].length)].makeStart();
+            holderOne =rand.nextInt(maze[0].length);
+            holderTwo =rand.nextInt(maze[0].length);
+            maze[0][holderOne].makeEnd();
+            maze[maze.length - 1][holderTwo].makeStart();
+            endX = 0;
+            endY = holderOne;
+            startX = maze.length - 1;
+            startY = holderTwo;
             break;
         case 2:
         //west is the start
-        maze[rand.nextInt(maze.length)][0].makeStart();
-        maze[rand.nextInt(maze.length)][maze[0].length-1].makeEnd();
+            holderOne =rand.nextInt(maze.length);
+            holderTwo =rand.nextInt(maze.length);
+        maze[holderOne][0].makeStart();
+        maze[holderTwo][maze[0].length-1].makeEnd();
+        startY = 0;
+        startX = holderOne;
+        endY = maze[0].length - 1;
+        endX = holderTwo;
         break;
         case 3:
             //east is the start
-            maze[rand.nextInt(maze.length)][0].makeEnd();
-            maze[rand.nextInt(maze.length)][maze[0].length-1].makeStart();
+            holderOne =rand.nextInt(maze.length);
+            holderTwo =rand.nextInt(maze.length);
+            maze[holderOne][0].makeEnd();
+            maze[holderTwo][maze[0].length-1].makeStart();
+            endY = 0;
+            endX = holderOne;
+            startY = maze[0].length - 1;
+            startX = holderTwo;
             break;
     }
+
     }
     public void buildMaze(){
+
         Random rand = new Random();
 
         pickStart();
@@ -116,6 +148,7 @@ public class MazeBuilder {
 
         LinkedList<int[]> placesTravelled = new LinkedList<int[]>();
         placesTravelled = explorePath(0,0,placesTravelled);
+
         int i = 0;
         while (i <placesTravelled.size()){
             int[] curentPos = placesTravelled.remove(i);
